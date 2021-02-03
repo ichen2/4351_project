@@ -47,6 +47,7 @@ Yylex(java.io.InputStream s, ErrorMsg e) {
 
 %%
 <YYINITIAL> " "	{}
+<YYINITIAL> [0-9]+ {return tok(sym.INT, yytext());}
 <YYINITIAL> [a-zA-Z][a-zA-Z0-9_]* {return tok(sym.ID, yytext());}
 <YYINITIAL> \n	{newline();}
 <YYINITIAL> ","	{return tok(sym.COMMA);}
@@ -61,7 +62,7 @@ Yylex(java.io.InputStream s, ErrorMsg e) {
 <YYINITIAL> "]" {return tok(sym.RBRACE);}
 <YYINITIAL> "{"	{return tok(sym.LBRACK);}
 <YYINITIAL> "}"	{return tok(sym.RBRACK);}
-<YYINITIAL> "/" {return tok(sym.DIVIDE));}
+<YYINITIAL> "/" {return tok(sym.DIVIDE);}
 <YYINITIAL> ">" {return tok(sym.GT);}
 <YYINITIAL> ">=" {return tok(sym.GE);}
 <YYINITIAL> "<" {return tok(sym.LT);}
