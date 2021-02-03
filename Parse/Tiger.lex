@@ -49,14 +49,24 @@ Yylex(java.io.InputStream s, ErrorMsg e) {
 <YYINITIAL> " "	{}
 <YYINITIAL> [a-zA-Z][a-zA-Z0-9_]* {return tok(sym.ID, yytext());}
 <YYINITIAL> \n	{newline();}
-<YYINITIAL> ","	{return tok(sym.COMMA, null);}
-<YYINITIAL> ":"	{return tok(sym.COLON, null);}
-<YYINITIAL> "-"	{return tok(sym.MINUS, null);}
-<YYINITIAL> "."	{return tok(sym.DOT, null);}
-<YYINITIAL> "("	{return tok(sym.LPAREN, null);}
-<YYINITIAL> ")"	{return tok(sym.RPAREN, null);}
-<YYINITIAL> ";"	{return tok(sym.SEMICOLON, null);}
-<YYINITIAL> "+"	{return tok(sym.PLUS, null);}
-<YYINITIAL> "{"	{return tok(sym.LBRACE, null);}
-<YYINITIAL> "}"	{return tok(sym.RBRACE, null);}
+<YYINITIAL> ","	{return tok(sym.COMMA);}
+<YYINITIAL> ":"	{return tok(sym.COLON);}
+<YYINITIAL> "-"	{return tok(sym.MINUS);}
+<YYINITIAL> "."	{return tok(sym.DOT);}
+<YYINITIAL> "("	{return tok(sym.LPAREN);}
+<YYINITIAL> ")"	{return tok(sym.RPAREN);}
+<YYINITIAL> ";"	{return tok(sym.SEMICOLON);}
+<YYINITIAL> "+"	{return tok(sym.PLUS);}
+<YYINITIAL> "[" {return tok(sym.LBRACE);}
+<YYINITIAL> "]" {return tok(sym.RBRACE);}
+<YYINITIAL> "{"	{return tok(sym.LBRACK);}
+<YYINITIAL> "}"	{return tok(sym.RBRACK);}
+<YYINITIAL> "/" {return tok(sym.DIVIDE));}
+<YYINITIAL> ">" {return tok(sym.GT);}
+<YYINITIAL> ">=" {return tok(sym.GE);}
+<YYINITIAL> "<" {return tok(sym.LT);}
+<YYINITIAL> "<=" {return tok(sym.LE);}
+<YYINITIAL> "*" {return tok(sym.TIMES);}
+<YYINITIAL> "<>" {return tok(sym.NEQ);}
+<YYINITIAL> "=" {return tok(sym.EQ);}
 . { err("Illegal character: " + yytext()); }
