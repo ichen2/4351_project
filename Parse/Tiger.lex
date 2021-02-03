@@ -59,4 +59,4 @@ Yylex(java.io.InputStream s, ErrorMsg e) {
 <YYINITIAL> "+"	{return tok(sym.PLUS, null);}
 <YYINITIAL> "{"	{return tok(sym.LBRACE, null);}
 <YYINITIAL> "}"	{return tok(sym.RBRACE, null);}
-<YYINITIAL> . { err("Illegal character: " + yytext()); }
+. { err("Illegal character: " + yytext()); }
