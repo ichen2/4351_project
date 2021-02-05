@@ -77,9 +77,9 @@ Yylex(java.io.InputStream s, ErrorMsg e) {
 
 <YYINITIAL> "\"" {strings++; stringBuffer = new StringBuffer(); yybegin(STRING);}
 <STRING>\\n {stringBuffer.append("\n");}
-<STRING>\\t {string.append("\t");}
-<STRING>\\\" {string.append("\"");}
-<STRING>\\\\ {string.append("\\");}
+<STRING>\\t {stringBuffer.append("\t");}
+<STRING>\\\" {stringBuffer.append("\"");}
+<STRING>\\\\ {stringBuffer.append("\\");}
 <STRING> "\"" {strings--; yybegin(YYINITIAL); return tok(sym.STRING, stringBuffer.toString());}
 <STRING> . {stringBuffer.append(yytext()); }
 
