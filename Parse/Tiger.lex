@@ -85,8 +85,9 @@ Yylex(java.io.InputStream s, ErrorMsg e) {
 
 <ESCAPED> n {stringBuffer.append("\n"); yybegin(STRING);}
 <ESCAPED> t {stringBuffer.append("\t"); yybegin(STRING);}
-<ESCAPED> "^"[@-_] {stringBuffer.append((char)(yytext().charAt(1)-'A'+1)); yybegin(STRING);}
+<ESCAPED> "^"[@-_] {stringBuffer.append("^" + (char)(yytext().charAt(1) - 'A')); yybegin(STRING);}
 <ESCAPED> \\ {stringBuffer.append("\\"); yybegin(STRING);}
+<ESCAPED> [\t|\r|" "|\n|\f]+[\\] {yybegin(STRING);}
 <ESCAPED> [0-9][0-9][0-9] {int ascii = Integer.parseInt(yytext()); if(ascii <= 255) {stringBuffer.append((char)ascii); yybegin(STRING);} else err("Not in the ASCII range");}
 <ESCAPED> . {err("Unexpected character " + yytext() + " after \\");}
 
