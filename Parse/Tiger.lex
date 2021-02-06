@@ -80,7 +80,7 @@ Yylex(java.io.InputStream s, ErrorMsg e) {
 <STRING>\\t {stringBuffer.append("\t");}
 <STRING>\\\" {stringBuffer.append("\"");}
 <STRING>\\\\ {stringBuffer.append("\\");}
-<STRING> "\"" {strings--; stringBuffer = null; yybegin(YYINITIAL); return tok(sym.STRING, stringBuffer.toString());}
+<STRING> "\"" {strings--; String s = stringBuffer.toString(); stringBuffer = null; yybegin(YYINITIAL); return tok(sym.STRING, s);}
 <STRING> . {stringBuffer.append(yytext()); }
 
 <YYINITIAL> [0-9]+ {return tok(sym.INT, yytext());}
