@@ -44,6 +44,7 @@ Yylex(java.io.InputStream s, ErrorMsg e) {
 
 %eof{
   if(stringBuffer != null) err("Unclosed string literal");
+  if(commentDepth >= 0) err("Unclosed comment literal");
 %eof}
 
 %eofval{
@@ -94,7 +95,7 @@ Yylex(java.io.InputStream s, ErrorMsg e) {
 <YYINITIAL> "/*" {commentDepth = 1; yybegin(COMMENT);}
 <COMMENT> "/*" {commentDepth += 1;}
 <COMMENT> [\n\r]+ {}
-<COMMENT> "*/" {if(commentDepth <= 1) yybegin(YYINITIAL); commentDepth--;}
+<COMMENT> "*/" {commentDepth--; if(commentDepth <= 0) yybegin(YYINITIAL);}
 <COMMENT> . {}
 
 <YYINITIAL> [0-9]+ {return tok(sym.INT, yytext());}
