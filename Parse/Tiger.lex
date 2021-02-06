@@ -42,9 +42,12 @@ Yylex(java.io.InputStream s, ErrorMsg e) {
 
 %}
 
+%eof{
+  if(stringBuffer != null) err("Unclosed string literal");
+%eof}
+
 %eofval{
 	{
-    if(stringBuffer != null) { err("ERROR: Unclosed string literal");}
 	  return tok(sym.EOF, null);
   }
 %eofval}       
