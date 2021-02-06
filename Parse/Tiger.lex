@@ -10,7 +10,6 @@ import ErrorMsg.ErrorMsg;
 
 %{
 
-private int strings;
 private StringBuffer stringBuffer;
 private int commentDepth;
 
@@ -52,7 +51,7 @@ Yylex(java.io.InputStream s, ErrorMsg e) {
 
 %state STRING
 %state COMMENT
-%state STRING_IGNORE
+%state ESCAPED
 
 %%
 <YYINITIAL> [" "|\f|\t]+	{}
@@ -76,13 +75,15 @@ Yylex(java.io.InputStream s, ErrorMsg e) {
 <YYINITIAL>let {return tok(sym.LET);}
 <YYINITIAL>then {return tok(sym.THEN);}
 
-<YYINITIAL> "\"" {strings++; stringBuffer = new StringBuffer(); yybegin(STRING);}
-<STRING>\\n {stringBuffer.append("\n");}
-<STRING>\\t {stringBuffer.append("\t");}
-<STRING>\\\" {stringBuffer.append("\"");}
-<STRING>\\\\ {stringBuffer.append("\\");}
-<STRING> "\"" {strings--; String s = stringBuffer.toString(); stringBuffer = null; yybegin(YYINITIAL); return tok(sym.STRING, s);}
+<YYINITIAL> "\"" {stringBuffer = new StringBuffer(); yybegin(STRING);}
+<STRING> "\"" {String s = stringBuffer.toString(); stringBuffer = null; yybegin(YYINITIAL); return tok(sym.STRING, s);}
+<STRING> \\ {yybegin(ESCAPED);}
 <STRING> . {stringBuffer.append(yytext()); }
+
+<ESCAPED> n {stringBuffer.append("\n"); yybegin(STRING);}
+<ESCAPED> t {stringBuffer.append("\t"); yybegin(STRING);}
+<ESCAPED> \\ {stringBuffer.append("\\"); yybegin(STRING);}
+<ESCAPED> [0-9]{3} {int i = Integer.parseInt(yytext()); if(a <= 255) stringBuffer.append((char)i); else err("Not in the ASCII range");}
 
 <YYINITIAL> "/*" {commentDepth = 1; yybegin(COMMENT);}
 <COMMENT> "/*" {commentDepth += 1;}
