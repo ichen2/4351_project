@@ -83,7 +83,7 @@ Yylex(java.io.InputStream s, ErrorMsg e) {
 <ESCAPED> n {stringBuffer.append("\n"); yybegin(STRING);}
 <ESCAPED> t {stringBuffer.append("\t"); yybegin(STRING);}
 <ESCAPED> \\ {stringBuffer.append("\\"); yybegin(STRING);}
-<ESCAPED> [0-9{3}] {int i = Integer.parseInt(yytext()); if(a <= 255) stringBuffer.append((char)i); else err("Not in the ASCII range");}
+<ESCAPED> [0-9][0-9][0-9] {int i = Integer.parseInt(yytext()); if(a <= 255) stringBuffer.append((char)i); else err("Not in the ASCII range");}
 
 <YYINITIAL> "/*" {commentDepth = 1; yybegin(COMMENT);}
 <COMMENT> "/*" {commentDepth += 1;}
