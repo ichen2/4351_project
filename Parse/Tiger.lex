@@ -86,7 +86,7 @@ Yylex(java.io.InputStream s, ErrorMsg e) {
 
 <YYINITIAL> "/*" {yybegin(COMMENT);}
 <COMMENT> "/*" {commentDepth += 1;}
-<COMMENT> "*/" {if(commentDepth <= 1) yybegin(YYINITIAL); else commentDepth--;}
+<COMMENT> "*/" {System.out.println(commentDepth); if(commentDepth <= 1) yybegin(YYINITIAL); else commentDepth--;}
 <COMMENT> . {}
 
 <YYINITIAL> [0-9]+ {return tok(sym.INT, yytext());}
