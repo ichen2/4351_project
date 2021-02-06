@@ -51,7 +51,7 @@ Yylex(java.io.InputStream s, ErrorMsg e) {
 
 %state STRING
 %state COMMENT
-%state ESCAPED
+%state STRING_IGNORE
 
 %%
 <YYINITIAL> [" "|\f|\t]+	{}
@@ -77,13 +77,13 @@ Yylex(java.io.InputStream s, ErrorMsg e) {
 
 <YYINITIAL> "\"" {stringBuffer = new StringBuffer(); yybegin(STRING);}
 <STRING> "\"" {String s = stringBuffer.toString(); stringBuffer = null; yybegin(YYINITIAL); return tok(sym.STRING, s);}
-<STRING> \\ {yybegin(ESCAPED);}
+<STRING> \\ {yybegin(STRING_IGNORE);}
 <STRING> . {stringBuffer.append(yytext()); }
 
-<ESCAPED> n {stringBuffer.append("\n"); yybegin(STRING);}
-<ESCAPED> t {stringBuffer.append("\t"); yybegin(STRING);}
-<ESCAPED> \\ {stringBuffer.append("\\"); yybegin(STRING);}
-<ESCAPED> [0-9]{3} {int i = Integer.parseInt(yytext()); if(a <= 255) stringBuffer.append((char)i); else err("Not in the ASCII range");}
+<STRING_IGNORE> n {stringBuffer.append("\n"); yybegin(STRING);}
+<STRING_IGNORE> t {stringBuffer.append("\t"); yybegin(STRING);}
+<STRING_IGNORE> \\ {stringBuffer.append("\\"); yybegin(STRING);}
+<STRING_IGNORE> [0-9]{3} {int i = Integer.parseInt(yytext()); if(a <= 255) stringBuffer.append((char)i); else err("Not in the ASCII range");}
 
 <YYINITIAL> "/*" {commentDepth = 1; yybegin(COMMENT);}
 <COMMENT> "/*" {commentDepth += 1;}
