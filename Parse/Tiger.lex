@@ -91,7 +91,6 @@ Yylex(java.io.InputStream s, ErrorMsg e) {
 
 <YYINITIAL> [0-9]+ {return tok(sym.INT, yytext());}
 <YYINITIAL> [a-zA-Z][a-zA-Z0-9_]* {return tok(sym.ID, yytext());}
-<YYINITIAL> \n	{newline();}
 <YYINITIAL> ","	{return tok(sym.COMMA);}
 <YYINITIAL> ":"	{return tok(sym.COLON);}
 <YYINITIAL> "-"	{return tok(sym.MINUS);}
