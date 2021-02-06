@@ -44,7 +44,7 @@ Yylex(java.io.InputStream s, ErrorMsg e) {
 
 %eofval{
 	{
-    if(strings != 0) { err("ERROR: Unclosed string literal");}
+    if(stringBuffer != null) { err("ERROR: Unclosed string literal");}
 	  return tok(sym.EOF, null);
   }
 %eofval}       
@@ -80,7 +80,7 @@ Yylex(java.io.InputStream s, ErrorMsg e) {
 <STRING>\\t {stringBuffer.append("\t");}
 <STRING>\\\" {stringBuffer.append("\"");}
 <STRING>\\\\ {stringBuffer.append("\\");}
-<STRING> "\"" {strings--; yybegin(YYINITIAL); return tok(sym.STRING, stringBuffer.toString());}
+<STRING> "\"" {strings--; stringBuffer = null; yybegin(YYINITIAL); return tok(sym.STRING, stringBuffer.toString());}
 <STRING> . {stringBuffer.append(yytext()); }
 
 <YYINITIAL> [0-9]+ {return tok(sym.INT, yytext());}
