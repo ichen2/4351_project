@@ -84,9 +84,10 @@ Yylex(java.io.InputStream s, ErrorMsg e) {
 <STRING> "\"" {strings--; String s = stringBuffer.toString(); stringBuffer = null; yybegin(YYINITIAL); return tok(sym.STRING, s);}
 <STRING> . {stringBuffer.append(yytext()); }
 
-<YYINITIAL> "/*" {yybegin(COMMENT);}
+<YYINITIAL> "/*" {commentDepth = 1; yybegin(COMMENT);}
 <COMMENT> "/*" {commentDepth += 1;}
-<COMMENT> "*/" {System.out.println(commentDepth); if(commentDepth <= 1) yybegin(YYINITIAL); else commentDepth--;}
+<COMMENT> [\n\r]+ {}
+<COMMENT> "*/" {if(commentDepth <= 1) yybegin(YYINITIAL); else commentDepth--;}
 <COMMENT> . {}
 
 <YYINITIAL> [0-9]+ {return tok(sym.INT, yytext());}
