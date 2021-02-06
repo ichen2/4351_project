@@ -12,6 +12,7 @@ import ErrorMsg.ErrorMsg;
 
 private int strings;
 private StringBuffer stringBuffer;
+private int commentDepth;
 
 private void newline() {
   errorMsg.newline(yychar);
@@ -82,6 +83,11 @@ Yylex(java.io.InputStream s, ErrorMsg e) {
 <STRING>\\\\ {stringBuffer.append("\\");}
 <STRING> "\"" {strings--; String s = stringBuffer.toString(); stringBuffer = null; yybegin(YYINITIAL); return tok(sym.STRING, s);}
 <STRING> . {stringBuffer.append(yytext()); }
+
+<YYINITIAL> "/*" {yybegin(COMMENT);}
+<COMMENT> "/*" {commentDepth += 1;}
+<COMMENT> "*/" {if(commentDepth <= 1) yybegin(YYINITIAL); else commentDepth--;}
+<COMMENT> . {}
 
 <YYINITIAL> [0-9]+ {return tok(sym.INT, yytext());}
 <YYINITIAL> [a-zA-Z][a-zA-Z0-9_]* {return tok(sym.ID, yytext());}
